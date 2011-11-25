@@ -1,0 +1,16 @@
+#summary One-sentence summary of this page.
+#labels IPTV,freeBSD
+
+= Introduction =
+IPTV по средствам UDP_to_HTTP с помощью программы udpxy
+
+компиляция и установка
+make && make install
+
+добавление в автозапуск 
+ee /etc/rc.d/rc.local #должен быть исполняемым chmod +x
+
+/usr/local/bin/udpxy -a rl2 -m rl1 -p 7788 -M 30 # em1 - локалка em0-Провайдер
+
+
+Клиентам в плэй листе заменить udp://@ на http://192.168.0.1:7788/udp/
