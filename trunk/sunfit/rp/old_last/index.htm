@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+<head>
+    <title>Расписание занятий в клубе SUNFIT</title>
+	<link rel="SHORTCUT ICON" href="images/favicon.ico" type="image/x-icon"> 
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.11.custom.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-i18n.js"></script>
+	
+	<link rel="stylesheet" href="css/ui-lightness/jquery.ui.button.css">
+
+	<script src="js/jquery.ui.core.js"></script>
+	<script src="js/jquery.ui.widget.js"></script>
+	<script src="js/jquery.ui.button.js"></script>
+	
+	<script type="text/javascript">
+$(function(){
+
+$.ajaxSetup({
+  mimeType: 'text/plain',
+  cache: 'false'
+});
+
+$.datepicker.setDefaults(
+	$.extend($.datepicker.regional["ru"])
+);
+
+$('#error-line').hide();
+$('#warning-line').hide()
+
+
+
+function BuildTrainersList ()
+{
+}
+
+function BuildLessonsList ()
+{
+}
+
+function timeAdd (time1, time2)
+{
+	hour = parseInt(time1.substr(0,2), 10) + parseInt(time2.substr(0,2), 10);
+	min = parseInt(time1.substr(3,2), 10) + parseInt(time2.substr(3,2), 10);
+  			
+	if (min>=60) { min = -(60 - min); hour = hour+1; }
+	if (hour>=24) { hour = -(24 - hour); }
+	if (min<=9) { min="0"+min; }
+	if (hour<=9) { hour="0"+hour; }
+	
+	return hour+":"+min;
+}
+
+function minToTime(min)
+{
+	var hour = 0;
+	if(min > 0)
+		while((min - 60) >= 0)
+		{
+			min-=60;
+			hour++;
+		}
+	min  = normalizeZero(min);
+	hour = normalizeZero(hour);
+	return hour+":"+min
+}
+
+function normalizeZero(v)
+{
+	if ( v <= 9)
+		return "0"+v;
+	return v;
+}
+
+
+var js_data = null;
+
+function FillTable(hall)
+{
+	var nilResult = true;
+	var dayIndex = 0;
+	//days
+	if ( js_data != null)
+		jQuery.each(js_data, function(k, v) 
+		{
+			$('#t'+hall+'day' + dayIndex).empty();
+			
+			if ( v.length != null )
+				//for each lesson
+				jQuery.each(v, function() 
+				{
+					//alert("hte "+this.time_end.substr(0,2)+" hts "+this.time_start.substr(0,2))
+					nilResult = false;
+					//hourEnd * hourModif - hourStart * hourModif + minutEnd - minutStart
+					var duration = parseInt(this.time_end.substr(0,2),10) * 60 - parseInt(this.time_start.substr(0,2),10) * 60 + parseInt(this.time_end.substr(3,2),10) - parseInt(this.time_start.substr(3,2),10);
+//					alert(duration + "="+this.time_end+"-"+this.time_start)
+//alert(this.time_end.substr(0,2) +"*"+60+"-"+this.time_start.substr(0,2)+ "*"+"60"+ "+"+ this.time_end.substr(3,2)+ "-" +this.time_start.substr(3,2))
+					var time = $('<p class="view-field view-data-node-data-field-time-start-field-time-start-value"></p>')
+					.append($('<a href=""></a>').append($('<span class="date-display-start"></span>').text(this.time_start + ' - ' + this.time_end )))
+					
+					var title = $('<p class="view-field view-data-node-data-field-classes-field-classes-nid"></p>').append($('<a href=""></a>').text(this.lesson_name))
+					var trainer = $('<p class="view-field view-data-node-data-field-teacher-field-teacher-uid"></p>').append($('<a href=""></a>').text(this.trainer_name))
+				
+					var element = $('<div class="calendar weekview schedule-block-style19" style="background:#' + this.color + ';position:absolute;height:'+this.length+'px"></div>').css('top', TimeToOffset(this.time_start))
+						.append($('<div class="vertical" style="height:'+duration+'px;"></div>').append($('<div></div>').append(time).append(title).append(trainer)))
+				
+					$('#t'+hall+'day' + this.weekday).append(element);
+					//alert('#t'+hall+'day' + this.weekday)
+				});
+			dayIndex++;	
+		});
+	if(nilResult)
+	{
+		$('#warning').text("По выбарнным критериям поиска ничего не найдено");
+		$('#warning-line').show()
+	}
+	else
+		$('#warning-line').hide()
+}
+
+	function BuildTable(id)
+	{
+		var table = $('<table id="t'+id+'"></table>');
+		var thead = $('<thead></thead>').append($('<tr></tr>')
+		.append($('<th class="days week" width="1%">время</th>'))
+		.append($('<th class="days week" width="13%"></th>').text('Понедельник ').append($('<span id="t'+id+'day0_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Вторник ').append($('<span id="t'+id+'day1_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Среда ').append($('<span id="t'+id+'day2_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Четверг ').append($('<span id="t'+id+'day3_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Пятница ').append($('<span id="t'+id+'day4_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Суббота ').append($('<span id="t'+id+'day5_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Воскресенье ').append($('<span id="t'+id+'day6_a"></span>')))
+		)
+		var tr = $('<tr class="odd"></tr>')
+		
+		var timeTd = $('<td class="week"></td>');
+		
+		var timer = '07:30';
+		for(i=1; i<66; i++)
+		{
+			
+			var interval = 'interval';
+			if(i%2 == 0) 
+			{
+				var interval = interval + " zero";
+			}
+			timeTd.append($('<span class="' + interval + '" />').text(timer)).append($('<br />'))
+			timer = timeAdd( timer, "00:15");
+		}
+		
+		tr.append(timeTd);
+		
+		for(i=0; i<7; i++)
+		{
+			tr.append($('<td></td>').append($('<div id="t'+id+'day'+i+'" class="inner" style="position:relative;"></div>')))
+		}
+		
+		table.append(thead).append($('<tbody></tbody>').append(tr))
+		
+		$('#timeTableContainer').append($('<div class="calendar-calendar"></div>').append('<div class="week-view"></div>')
+		.append(table)
+		.append($('<table id="t'+id+'header-fixed"></table>')
+			.css('position','fixed')
+			.css('top', '0px')
+			.css('display','none')
+			.css('width', '1200px')));
+
+		var tableOffsetTop = $("#t"+id).offset().top;
+		var tableOffsetBottom = $("#t"+id).offset().top + $("#t"+id).height() - 20;
+//		var $header = $("#t"+id+" > thead").clone();
+//		var $fixedHeader = $("#t"+id+"header-fixed").append($header);
+
+		$(window).bind("scroll", function() {
+		    var offset = $(this).scrollTop();
+
+		    if (offset >= tableOffsetTop && $("#t"+id+"header-fixed").is(":hidden") && offset <tableOffsetBottom) {
+			    $("#t"+id+"header-fixed").append($("#t"+id+" > thead").clone());
+		        $("#t"+id+"header-fixed").show();
+		    }
+		    else if (offset < tableOffsetTop || offset >tableOffsetBottom) {
+		    	$("#t"+id+"header-fixed").html("");
+		        $("#t"+id+"header-fixed").hide();
+		    }
+		});
+	}
+	
+	function updateWeekDates(id,date)
+	{
+
+		var date = new Date(date);
+
+		date.setUTCDate(date.getUTCDate() - date.getUTCDay() + 1);
+//		alert(date.getUTCDate())
+		$('#date_from').text(normalizeZero(date.getUTCDate())+"."+normalizeZero(date.getUTCMonth()));
+		for(i=0; i<7; i++)
+		{
+			$('#t'+id+'day' + i + '_a').text(date.getUTCDate());
+			date.setUTCDate(date.getUTCDate() + 1);
+		}
+		$('#date_to').text(normalizeZero(date.getUTCDate())+"."+normalizeZero(date.getUTCMonth()));
+	}
+
+	function TimeToOffset(time)
+	{
+		var h = time.substr(0,2) - 7;
+		var m = time.substr(3,2) - 30;
+		return (h*60+m);
+	}
+
+	function getTableContent(id, date)
+	{
+		var trainer = $("#trainers option:selected").val()
+		var lesson = $("#lessons option:selected").val()
+
+		$.getJSON('table_create.php',
+		{'m':'table', 'hall':id, 'trainer': trainer, 'lesson':lesson, 'pikDate':date},
+		function(vv)
+		{
+			js_data = vv;
+			FillTable(id);
+		});
+
+
+	}
+	
+	function getTrainers()
+	{
+		$.getJSON('table_create.php',
+		{m:'trainers'},
+		function(vv)
+		{	
+			jQuery.each(vv, function(k, v) {
+				$('#trainers').append($('<option value="'+k+'">'+v+'</option>'));
+			});
+			
+		});
+	}
+	
+	function getLessons()
+	{
+		$.getJSON('table_create.php',
+		{m:'lessons'},
+		function(vv)
+		{	
+			jQuery.each(vv, function(k, v) {
+				$('#lessons').append($('<option value="'+k+'">'+v+'</option>'));
+			});
+		});
+	}
+	
+	function getWeekDates()
+	{
+		$.getJSON('table_create.php',
+		{m:'date'},
+		function(vv)
+		{	
+			jQuery.each(vv, function(k, v) {
+				$('#lessons').append($('<option value="'+k+'">'+v+'</option>'));
+			});
+		})
+	}
+	
+	$("#error").ajaxError(function(event, request, settings, exception){
+		//$(this).append("Error requesting page " + settings.url + " = "+ exception);
+		//warning-line.hide()
+		$(this).text("Ошибка выполнения запроса");
+		$('#error-line').show()
+
+	});
+	
+	$("#reset").button()
+	
+	$("#reset").click(function() { 
+		$("select").each(function(index) {
+			$(this).children(" :first-child").attr("selected", "selected");
+		})
+		$( "#datepicker" ).datepicker('setDate',new Date());
+		updateWeekDates(1, $( "#datepicker" ).val());
+		updateWeekDates(2, $( "#datepicker" ).val());
+		getTableContent(1, $( "#datepicker" ).val());
+		getTableContent(2, $( "#datepicker" ).val());
+	});
+	
+	$( "#datepicker" ).datepicker({ 
+		dateFormat: 'yy-mm-dd',
+		selectWeek:true,
+		firstDay: 1,
+		onSelect: function(dateText, inst) {
+			getTableContent(1, dateText);
+			getTableContent(2, dateText);
+			updateWeekDates(1, dateText);
+			updateWeekDates(2, dateText);
+		}	
+	});
+	$( "#datepicker" ).datepicker('setDate',new Date());
+	
+	
+	$('#timeTableContainer').append('<div class="header"><h2><a href="http://rp.sunfit.com.ua/#" title="">Большой зал</a></h2></div>')
+	BuildTable(1);
+	$('#timeTableContainer').append('<div class="header"><h2><a href="http://rp.sunfit.com.ua/#" title="">Малый зал</a></h2></div>')
+	BuildTable(2);
+	
+	getTrainers();
+	getLessons();
+	getTableContent(1, $( "#datepicker" ).val());
+	getTableContent(2, $( "#datepicker" ).val());
+	
+	$("select").change(function () {
+		getTableContent(1, $( "#datepicker" ).val());
+		getTableContent(2, $( "#datepicker" ).val());
+	});
+	
+	updateWeekDates(1,$( "#datepicker" ).val())
+	updateWeekDates(2,$( "#datepicker" ).val())
+
+});
+</script>
+</head>
+<body>
+<div id="msg"></div>
+	<div id="global">
+		<div id="header">
+			<a href="http://sunfit.com.ua" ><img src="images/logo.png" height="250px"></a>
+		</div>
+		<div id="contentic2">
+    		<h1>Расписание занятий в клубе SUNFIT С <span id='date_from'></span> по <span id='date_to'></span></h1>
+			<ul class="legenda">
+				<li>Расписание уточнять в начале недели на сайте</li>
+				<li>Запись на индивидуальные занятия по телефону: 786-07-10 или (050) 716-55-65</li>
+			</ul>
+			<div class="filtr">
+			<table><tr>
+				<td>
+        			<h2>Занятия:</h2>
+		        	<SELECT NAME="trainers" id="lessons"><option value="NULL" selected></SELECT>
+		        </td>
+		        <td>
+		        	<h2>Тренеры:</h2>
+					<SELECT NAME="lessons" id="trainers"><option value="NULL" selected></SELECT>
+				</td>
+				<td>
+					<h2>Дата:</h2>
+					<input type="text" id="datepicker" />
+				</td>
+				<td>
+					<button id="reset">Сброс</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em; " id="error-line"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<span id="error"></span></p>
+					</div>
+
+					<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em; " id="warning-line"> 
+						<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+						<span id="warning"></span></p>
+					</div>
+				</td>
+			</tr></table>
+    		</div>	
+    		
+		</div>
+		
+		<a id="timetable"></a>
+		<div class="iContent">
+			<div class="content">
+    			<div id="timeTableContainer"></div>
+			</div>
+		</div>	
+	</div>
+
+
+</body>
+</html>
