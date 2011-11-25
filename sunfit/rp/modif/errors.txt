@@ -1,0 +1,37 @@
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1)   ORDER BY `date`' at line 3
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1)   ORDER BY `date`' at line 3
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'href=' at line 3
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'href=' at line 3
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'href=' at line 3
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'href=' at line 3
+UPDATE lessons SET name='Пилатес + калланетика + Сжигаем калории !!', duration='0', color='16cc2c' WHERE lid=26
+UPDATE lessons SET name='Пилатес + калланетика + Сжигаем калории !!!', duration='0', color='16cc2c' WHERE lid=26
+UPDATE lessons SET name='<br>Парная суставная ЙОГА<br><br>', duration='120', color='eeff00' WHERE lid=17
+UPDATE lessons SET name='Йога для начинающих', duration='90', color='f2a7d4' WHERE lid=3
+UPDATE lessons SET name='Пилатес + Калланетика + Сжигаем калории !!!', duration='0', color='16cc2c' WHERE lid=26
+UPDATE lessons SET name='Функциональный тренинг Сжигаем калории !!!', duration='0', color='16cc2c' WHERE lid=26
+UPDATE lessons SET name='Функциональный_тренинг Сжигаем калории !!!', duration='0', color='16cc2c' WHERE lid=26
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+UPDATE lessons SET name='Йогалатес', duration='60', color='0091ff' WHERE lid=8
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+Column count doesn't match value count at row 1
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') DAY + `date`,
+ `time_start`, `time_end`, `hall`, `trainer`, `lesson`
+from trai' at line 4
+Unknown column 'h' in 'field list'

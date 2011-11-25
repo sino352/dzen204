@@ -1,0 +1,842 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+<head>
+    <title>Расписание занятий в клубе SUNFIT</title>
+	<link rel="SHORTCUT ICON" href="images/favicon.ico" type="image/x-icon"> 
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<link href="../css/style.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../css/colorpicker.css" rel="stylesheet" type="text/css" media="screen"/>
+    
+	<link type="text/css" href="../css/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+    <script type="text/javascript" src="../js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="../js/jquery-ui-1.8.11.custom.min.js"></script>
+	<script type="text/javascript" src="../js/jquery-ui-i18n.js"></script>
+	
+	<link rel="stylesheet" href="../css/ui-lightness/jquery.ui.button.css">
+
+	<script src="../js/jquery.ui.core.js"></script>
+	<script src="../js/jquery.ui.widget.js"></script>
+	<script src="../js/jquery.ui.button.js"></script>
+	
+	<script src="../js/colorpicker.js"></script>
+	
+		<script type="text/javascript" src="../js/lib.add.js"></script>
+	
+	<script type="text/javascript">
+$(function(){
+
+$.ajaxSetup({
+  mimeType: 'text/plain',
+  cache: 'false'
+});
+
+$.datepicker.setDefaults(
+	$.extend($.datepicker.regional["ru"])
+);
+
+var duration = 0;
+
+$('#error-line').hide();
+$('#warning-line').hide();
+$('#edit_title').hide();
+$('#del_lesson_layout').hide();
+$('#del_lesson_title').hide();
+$('#delete_lesson').hide();
+
+
+
+/* -- TRAINING FORM -- */
+
+//buttons
+$("#training_create").button().click(function() { 
+		var trainer = $("#training_form_trainers option:selected").val();
+		var lesson = $("#training_form_lessons option:selected").val();
+		var date = $( "#training_form_date" ).val();
+		var hall = $( "#training_form_hall" ).val();
+		var time_start = $( "#training_form_time_start" ).val();
+		time_start = time_start.substr(0,2)+":"+time_start.substr(3,2);
+		var time_end = $( "#training_form_time_end" ).val();
+		time_end = time_end.substr(0,2)+":"+time_end.substr(3,2);
+		$.getJSON('modif.php',
+		{m:'training_create', trainer:trainer, lesson:lesson, date:date, hall:hall, time_start:time_start, time_end:time_end},
+		function(vv)
+		{	
+			alert(vv.error)
+			toggleForm("training","select");
+			clearForm("training");
+			getTableContent(1,$('#filter_date').val());
+			getTableContent(2,$('#filter_date').val());
+		});
+});
+$("#training_save").button().click(function() { 
+	var id = $("#training_edit_id").text();
+	var trainer = $("#training_form_trainers option:selected").val();
+	var lesson = $("#training_form_lessons option:selected").val();
+	var date = $( "#training_form_date" ).val();
+	var hall = $( "#training_form_hall" ).val();
+	var time_start = $( "#training_form_time_start" ).val();
+	var time_end = $( "#training_form_time_end" ).val();
+	$.getJSON('modif.php',
+	{m:'training_save', id:id, trainer:trainer, lesson:lesson, date:date, hall:hall, time_start:time_start, time_end:time_end},
+	function(vv)
+	{	
+		alert(vv.error);
+		clearForm("training");
+		toggleForm("training", "select");
+		getTableContent(1,$('#filter_date').val());
+		getTableContent(2,$('#filter_date').val());
+	});
+});
+$("#training_cancel").button().click(function() { 
+	clearForm("training"); 
+	toggleForm("training","select");	
+});
+$("#training_toggle_add").button().click(function() { 
+	toggleForm("training","add");
+});
+
+
+//selectors
+$("#training_form_lessons").change(function () {
+	$.getJSON('modif.php',
+	{m:'lesson', id:$("#training_form_lessons option:selected").val()},
+	function(vv)
+	{	
+		training_duration = vv.duration;
+	});
+});
+
+$("#training_form_date" ).datepicker({ 
+	dateFormat: 'yy-mm-dd',
+	selectWeek:true,
+	firstDay: 1,
+	onSelect: function(dateText, inst) {
+
+	}	
+}).datepicker('setDate',new Date());
+
+$('#training_form_time_start').bind('keyup', function(){
+
+	if ( $(this).val().length == 5 )
+	{
+		if(typeof(training_duration) != 'undefined')
+			$('#training_form_time_end').val(minToTime(timeToMin($(this).val())+parseInt(training_duration)))
+	}
+})
+
+function fillTrainingForm(id)
+{
+	$.getJSON('modif.php',
+	{m:'training', id:id},
+	function(vv)
+	{	
+	
+		$('#training_edit_id').text(vv.id);
+	
+		// something like callbeck to select value just in time
+		getTrainersCopmleate = function ()
+		{
+			delete getTrainersCopmleate;
+			$("#training_form_trainers [value='"+vv.trainer+"']").attr("selected", "selected");
+		}
+		getLessonsCopmleate = function ()
+		{
+			delete getLessonsCopmleate;
+			$("#training_form_lessons [value='"+vv.lesson+"']").attr("selected", "selected");
+		}
+		$("#training_form_date").val(vv.date);
+		$("#training_form_hall" ).val(vv.hall);
+		$("#training_form_time_start").val(vv.time_start);
+		$("#training_form_time_end").val(vv.time_end);
+		
+		toggleForm("training", "edit");
+	});
+}
+
+/* -- END TRAINING FORM -- */
+
+
+
+/* -- LESSON FORM -- */
+
+$("#lesson_create").button().click(function() { 
+	var name = $("#lesson_add_name").val();
+	var color = $("#lesson_add_color").val();
+	var duration = $("#lesson_add_duration").val();
+	var desc = $("#lesson_add_desc").val();
+	$.getJSON('modif.php',
+	{m:'lesson_create', name:name, color:color, duration:duration, desc:desc},
+	function(vv)
+	{	
+		alert(vv.error)
+		getLessons('lessons');
+		clearForm('lesson');
+		toggleForm('lesson', "select")		
+	});
+
+});
+
+$('#lesson_delete').button().click(function() {
+	$.getJSON('modif.php',
+	{m:'lesson_delete', id:$("#lesson_del_select option:selected").val()},
+	function(vv)
+	{	
+		alert(vv.error)
+		getLessons('lessons');
+		clearForm('lesson');
+		toggleForm('lesson', "select")
+	});
+});
+
+$('#lesson_save').button().click(function() {
+	var id = $("#lesson_edit_select option:selected").val()
+	var name = $("#lesson_edit_name").val();
+	var color = $("#lesson_edit_color").val();
+	var duration = $("#lesson_edit_duration").val();
+	var desc = $("#lesson_edit_desc").val();
+	$.getJSON('modif.php',
+	{m:'lesson_save', id:id, name:name, color:color, duration:duration, desc:desc},
+	function(vv)
+	{	
+		alert(vv.error)
+		getLessons('lessons');
+		clearForm('lesson');
+		toggleForm('lesson', "select")		
+	});
+});
+
+$('#lesson_cancel').button().click(function() {
+	clearForm('lesson');
+	toggleForm('lesson', "select")
+});
+
+$('#lesson_toggle_del').button().click(function(){ 
+	toggleForm("lesson", "del");
+});
+
+$('#lesson_toggle_edit').button().click(function(){ 
+	toggleForm("lesson", "edit");
+});
+
+$('#lesson_toggle_add').button().click(function(){ 
+	toggleForm("lesson", "add");
+});
+
+$("#lesson_edit_select").change(function () {
+	$.getJSON('modif.php',
+	{m:'lesson', id:$("#lesson_edit_select option:selected").val()},
+	function(vv)
+	{	
+		$('#lesson_edit_name').val(vv.name);
+		$('#lesson_edit_duration').val(vv.duration);
+		$('#lesson_edit_color').val(vv.color);
+		//$('#lesson_edit_desc').val(vv.desc);
+		duration = vv.duration;
+	});
+});
+
+$('#lesson_edit_color').ColorPicker({
+	onSubmit: function(hsb, hex, rgb, el) {
+		$(el).val(hex);
+		$(el).ColorPickerHide();
+	},
+	onBeforeShow: function () {
+		$(this).ColorPickerSetColor(this.value);
+	}
+})
+.bind('keyup', function(){
+	$(this).ColorPickerSetColor(this.value);
+});
+
+$('#lesson_add_color').ColorPicker({
+	onSubmit: function(hsb, hex, rgb, el) {
+		$(el).val(hex);
+		$(el).ColorPickerHide();
+	},
+	onBeforeShow: function () {
+		$(this).ColorPickerSetColor(this.value);
+	}
+})
+.bind('keyup', function(){
+	$(this).ColorPickerSetColor(this.value);
+});	
+
+/* -- END LESSON FORM -- */
+
+$("#create_trainer").button()
+$("#create_trainer").click(function() { 
+	sendTrainer();
+});
+
+
+
+/* -- COPYWEEK << -- */
+
+$("#copyweek_day" ).datepicker({ 
+	dateFormat: 'yy-mm-dd',
+	selectWeek:true,
+	firstDay: 1,
+	onSelect: function(dateText, inst) {
+
+	}	
+}).datepicker('setDate',new Date());
+
+$('#copyweek_copy').button().click(function() {
+	var weekday = $("#copyweek_day").val();
+	var countToAdd = $("#copyweek_count").val();
+	$.getJSON('modif.php',
+	{m:'copyweek_copy', weekday:weekday, countToAdd:countToAdd},
+	function(vv)
+	{	
+		alert(vv.error)
+		getTableContent(1,$('#filter_date').val());
+		getTableContent(2,$('#filter_date').val());		
+	});
+});
+/* -- >> COPYWEEK -- */
+
+
+$( "#filter_date" ).datepicker({ 
+	dateFormat: 'yy-mm-dd',
+	selectWeek:true,
+	firstDay: 1,
+	onSelect: function(dateText, inst) {
+		updateWeekDates(1,$('#filter_date').val());
+		getTableContent(1,$('#filter_date').val());
+		updateWeekDates(2,$('#filter_date').val());
+		getTableContent(2,$('#filter_date').val());
+		
+	}	
+});
+$( "#filter_date" ).datepicker('setDate',new Date());
+
+	
+	var js_data = null;
+
+function FillTable(hall)
+{
+	var nilResult = true;
+	var dayIndex = 0;
+	//days
+	if ( js_data != null)
+		jQuery.each(js_data, function(k, v) 
+		{
+			$('#t'+hall+'day' + dayIndex).empty();
+			
+			if ( v.length != null )
+				//for each lesson
+				jQuery.each(v, function() 
+				{
+					nilResult = false;
+					//hourEnd * hourModif - hourStart * hourModif + minutEnd - minutStart
+					var duration = parseInt(this.time_end.substr(0,2),10) * 60 - parseInt(this.time_start.substr(0,2),10) * 60 + parseInt(this.time_end.substr(3,2),10) - parseInt(this.time_start.substr(3,2),10);
+					duration = (duration<15)? 15 : duration;
+					
+					var buttonE = $('<a var="'+this.id+'" href="#">edit </a>')
+						.bind('click',function(){
+							fillTrainingForm($(this).attr('var'));
+						})
+					
+					//.parent()
+					var buttonD = $('<a var="'+this.id+'" href="#"> del</a>').click(function(){
+						$($('<div var="'+$(this).attr('var')+'" id="dialog" title="Удаление тренировки из расписания"><p> Вы уверенны что хотите удалить запись Ид:'+$(this).attr('var')+'</p></div>')
+						.append($(this).parent().parent().parent().clone())).dialog({
+							width: 600,
+							buttons: {
+								"Ok": function() { 
+								var dialog = $(this);
+									$.getJSON('modif.php',
+									{m:'training_delete', id:$(this).attr('var')},
+									function(vv)
+									{	
+										alert(vv.error)
+										dialog.dialog("close");
+										getTableContent(1,$('#filter_date').val());
+										getTableContent(2,$('#filter_date').val());
+									});
+									
+								}, 
+								"Cancel": function() { 
+									$(this).dialog("close"); 
+								} 
+							}
+						})
+						return false;
+					
+						
+					});
+					
+					var time = $('<p class="view-field view-data-node-data-field-time-start-field-time-start-value"></p>')
+						.append($('<span class="date-display-start"></span>')
+								.text(this.time_start + ' - ' + this.time_end +' ').append(buttonE).append(buttonD))
+					
+					var title = $('<p class="view-field view-data-node-data-field-classes-field-classes-nid"></p>')
+						.append(this.lesson_name)
+					var trainer = $('<p class="view-field view-data-node-data-field-teacher-field-teacher-uid"></p>')
+						.append(this.trainer_name)
+					var element = $('<div class="calendar weekview schedule-block-style19" style="background:#' + this.color + ';position:absolute;height:'+this.length+'px"></div>')
+						.css('top', (timeToMin(this.time_start) - timeToMin("07:30")))
+						.append($('<div class="vertical" style="height:'+duration+'px;"></div>')
+							.append($('<div></div>')
+								.append(time)
+								.append(title)
+								.append(trainer)))
+				
+					$('#t'+hall+'day' + this.weekday).append(element);
+				});
+			dayIndex++;	
+		});
+	if(nilResult)
+	{
+		$('#warning').text("По выбарнным критериям поиска ничего не найдено");
+		$('#warning-line').show()
+	}
+	else
+		$('#warning-line').hide()
+}
+
+	function BuildTable(id)
+	{
+		var table = $('<table id="t'+id+'"></table>');
+		var thead = $('<thead></thead>').append($('<tr></tr>')
+		.append($('<th class="days week" width="1%">время</th>'))
+		.append($('<th class="days week" width="13%"></th>').text('Понедельник ').append($('<span id="t'+id+'day0_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Вторник ').append($('<span id="t'+id+'day1_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Среда ').append($('<span id="t'+id+'day2_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Четверг ').append($('<span id="t'+id+'day3_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Пятница ').append($('<span id="t'+id+'day4_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Суббота ').append($('<span id="t'+id+'day5_a"></span>')))
+		.append($('<th class="days week" width="13%"></th>').text('Воскресенье ').append($('<span id="t'+id+'day6_a"></span>')))
+		)
+		var tr = $('<tr class="odd"></tr>')
+		
+		var timeTd = $('<td class="week"></td>');
+		
+		var timer = '07:30';
+		for(i=1; i<60; i++)
+		{
+			
+			var interval = 'interval';
+			if(i%2 == 0) 
+			{
+				var interval = interval + " zero";
+			}
+			timeTd.append($('<span class="' + interval + '" />').text(timer)).append($('<br />'))
+			timer = timeAdd( timer, "00:15");
+		}
+		
+		tr.append(timeTd);
+		
+		for(i=0; i<7; i++)
+		{
+			tr.append($('<td></td>').append($('<div id="t'+id+'day'+i+'" class="inner" style="position:relative;"></div>')))
+		}
+		
+		table.append(thead).append($('<tbody></tbody>').append(tr))
+		
+		$('#timeTableContainer').append($('<div class="calendar-calendar"></div>').append('<div class="week-view"></div>')
+		.append(table)
+		.append($('<table id="t'+id+'header-fixed"></table>')
+			.css('position','fixed')
+			.css('top', '0px')
+			.css('display','none')
+			.css('width', '1200px')));
+
+		var tableOffsetTop = $("#t"+id).offset().top;
+		var tableOffsetBottom = $("#t"+id).offset().top + $("#t"+id).height() - 20;
+//		var $header = $("#t"+id+" > thead").clone();
+//		var $fixedHeader = $("#t"+id+"header-fixed").append($header);
+
+		$(window).bind("scroll", function() {
+		    var offset = $(this).scrollTop();
+
+		    if (offset >= tableOffsetTop && $("#t"+id+"header-fixed").is(":hidden") && offset <tableOffsetBottom) {
+			    $("#t"+id+"header-fixed").append($("#t"+id+" > thead").clone());
+		        $("#t"+id+"header-fixed").show();
+		    }
+		    else if (offset < tableOffsetTop || offset >tableOffsetBottom) {
+		    	$("#t"+id+"header-fixed").empty();
+		        $("#t"+id+"header-fixed").hide();
+		    }
+		});
+	}
+	
+	
+	
+	function updateWeekDates(id,date)
+	{
+
+		var date = new Date(date.substr(0,4), date.substr(5,2)-1, date.substr(8,2));
+		date.setUTCDate(date.getUTCDate() - date.getUTCDay() + 1);
+		for(i=0; i<7; i++)
+		{
+			$('#t'+id+'day' + i + '_a').text(date.getUTCDate());
+			date.setUTCDate(date.getUTCDate() + 1);
+		}
+	}
+	
+	function clearForm(id)
+	{
+		if(id=="training")
+		{
+			$("#training_edit_id").text("");
+			$("#training_form_trainers [value='NULL']").attr("selected", "selected");
+			$("#training_form_lessons [value='NULL']").attr("selected", "selected");
+			$( "#training_form_date" ).datepicker('setDate',new Date());
+			$( "#training_form_hall" ).val("");
+			$( "#training_form_time_start" ).val("");
+			$( "#training_form_time_end" ).val("");
+		}
+		else if(id=="lesson")
+		{
+			$("#lesson_add_color").val("FF0000");
+			$("#lesson_add_duration").val("");
+			$("#lesson_add_desc").val("");
+			$("#lesson_edit_color").val("FF0000");
+			$("#lesson_edit_duration").val("");
+			$("#lesson_edit_desc").val("");
+			$("#lesson_edit_name").val("");
+		}
+		else if(id=="trainer")
+		{
+			
+		}
+	}
+	function toggleForm(id, state)
+	{
+		//training
+		var addState = ((id=="training") && (state=="add"));
+		var editState = ((id=="training") && (state=="edit"));
+		var selectState = ((id!="training") || (state=="select"));
+
+		if(typeof(training_state) == 'undefined' || (id != 'training' && training_state != "select") || (id == 'training' && training_state != state))
+		{
+			training_state = (id!="training") ? 'select' : state;
+			$('#training_add_title').toggle(addState);
+			$('#training_edit_title').toggle(editState);
+			$('#training_select_title').toggle(selectState);
+			
+			$('#training_layout_form').toggle((addState || editState));
+			$('#training_layout_select').toggle(selectState);
+			
+			$('#training_save').toggle(editState);
+			$('#training_create').toggle(addState);
+			$('#training_cancel').toggle((addState || editState));
+			
+			if(addState || editState)
+			{
+				getLessons('training_form_lessons');
+				getTrainers('training_form_trainers');
+			}
+		}
+		
+		//lesson
+		var addState = ((id=="lesson") && (state=="add"));
+		var editState = ((id=="lesson") && (state=="edit"));
+		var deleteState = ((id=="lesson") && (state=="del"));
+		var selectState = ((id!="lesson") || (state=="select"));
+		if(typeof(lesson_state) == 'undefined' || (id != 'lesson' && lesson_state != "select") || (id == 'lesson' && lesson_state != state))
+		{
+			lesson_sate = (id!="lesson") ? 'select' : state;
+			$('#lesson_title_del').toggle(deleteState);			
+			$('#lesson_layout_del').toggle(deleteState);
+			$('#lesson_delete').toggle(deleteState);
+			
+			$('#lesson_title_add').toggle(addState);
+			$('#lesson_layout_add').toggle(addState);
+			$('#lesson_create').toggle(addState);
+			
+			$('#lesson_title_edit').toggle(editState);
+			$('#lesson_layout_edit').toggle(editState);
+			$('#lesson_save').toggle(editState);
+			
+			$('#lesson_title_select').toggle(selectState);
+			$('#lesson_layout_select').toggle(selectState);
+			
+			$('#lesson_cancel').toggle((addState || editState || deleteState));
+			
+			if(state=="del")
+				getLessons('lesson_del_select');
+			else if (state == "edit")
+				getLessons('lesson_edit_select');
+		}
+	}
+
+	function getTableContent(id, date)
+	{
+		var trainer = $("#trainers option:selected").val()
+		var lesson = $("#lessons option:selected").val()
+
+		$.getJSON('modif.php',{'m':'table', 'hall':id, 'pikDate':date},
+		function(vv) {
+			js_data = vv;
+			FillTable(id);
+		});
+	}
+
+	
+	function getTrainers(form_id)
+	{
+		$.getJSON('modif.php',
+		{m:'trainers'},
+		function(vv)
+		{	
+			$('#'+form_id).empty();
+			$('#'+form_id).append($('<option value="NULL"></option>'));
+			jQuery.each(vv, function(k, v) {
+				$('#'+form_id).append($('<option value="'+k+'">'+v+'</option>'));
+			});
+			if(typeof(getTrainersCopmleate) == 'function')
+				getTrainersCopmleate();
+		});
+	
+	}
+
+	
+	function getLessons(form_id)
+	{
+		var val = $("#"+form_id+" option:selected").val();
+		$.getJSON('modif.php',
+		{m:'lessons'},
+		function(vv)
+		{	
+			$('#'+form_id).empty();
+			$('#'+form_id).append($('<option value="NULL"></option>'));
+			jQuery.each(vv, function(k, v) {
+				$('#'+form_id).append($('<option value="'+k+'">'+v+'</option>'));
+			});
+			if(typeof(getLessonsCopmleate) == 'function')
+				getLessonsCopmleate();
+		});
+		$("#"+form_id+" [value='"+val+"']").attr("selected", "selected");
+	}
+	
+	function getLesson(id)
+	{
+		$.getJSON('modif.php',
+		{m:'lesson', id:id},
+		function(vv)
+		{	
+			//alert(vv.id)
+			return vv;
+		});
+		
+	}
+	
+	function sendTrainer()
+	{
+		var name = $("#trainer_name").val();
+		var phone = $("#trainer_phone").val();
+		$.getJSON('modif.php',
+		{m:'create_trainer', name:name, phone:phone},
+		function(vv)
+		{	
+			alert(vv.error)
+			getTrainers();
+		});
+	}
+	toggleForm("nil",'select');
+	
+	
+	$('#timeTableContainer').append("<h2>Большой зал</h2>")
+	BuildTable(1);
+	getTableContent(1,$('#filter_date').val());
+	updateWeekDates(1,$('#filter_date').val());
+	$('#timeTableContainer').append("<h2>Малый зал</h2>")
+	BuildTable(2);
+	getTableContent(2,$('#filter_date').val());
+	updateWeekDates(2,$('#filter_date').val());
+	
+});
+	</script>
+	
+</head>
+<body>
+<div id="msg"></div>
+
+	<div id="global" style="width:1200px">
+<div id="contentic2" class="filtr">
+<a id="add_edit_anch"></a>
+<h1 id="training_select_title">Тренировка:</h1>
+<h1 id="training_add_title">Добавление тренировки в расписание</h1>
+<h1 id="training_edit_title">Редактирование записи №<span id="training_edit_id"></span></h1>
+	<table>
+		<tr id="training_layout_form">
+			<td colspan="3">
+				<table>
+					<tr>
+						<td>
+        					Тренер: 
+		       				<SELECT id="training_form_trainers"></SELECT>
+		   				</td>
+						<td>
+							Занятие:
+							<SELECT id="training_form_lessons"></SELECT>
+						</td>
+						<td>
+							Дата:
+							<input type="text" id="training_form_date" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Начало в:
+							<input type="text" id="training_form_time_start"></input>
+						</td>				
+						<td>
+							Окончание в:
+							<input type="text" id="training_form_time_end"></input>				
+						</td>
+						<td>
+							(вводить в формате 00:00)
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							Зал:
+							<input type="text" id="training_form_hall"></input>
+						</td>
+					</tr>
+				</table>
+			</td>	
+		</tr>
+		
+		<tr>
+			<td colspan="3">
+				<button id="training_create">Создать</button>
+				<button id="training_save">Сохранить</button>
+				<button id="training_cancel" class="button">Отмена</button>
+			</td>
+		</tr>
+		<tr id="training_layout_select">
+			<td>
+				<button id="training_toggle_add">Добавить</button>
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="contentic2" class="filtr">
+	<h1 id="lesson_title_add">Добавление занятия в базу</h1>
+	<h1 id="lesson_title_del">Удаление занятия из базы</h1>
+	<h1 id="lesson_title_edit">Редактирование занятие</h1>
+	<h1 id="lesson_title_select">Занятие:</h1>
+	<table>
+		<tr id="lesson_layout_add">
+			<td>
+        		Название занятия:
+		       	<input type="text" id="lesson_add_name"></input>
+		    </td>
+		    <td>
+		      	Цвет фона (в расписании):
+				<input type="text" maxlength="6" size="6" id="lesson_add_color" value="ff0000" />
+			</td>
+			<td>
+				Продолжительность:
+				<input type="text" id="lesson_add_duration"></input><br/>
+				Описание:
+				<input type="text" id="lesson_add_desc"></input>
+			</td>
+		</tr>
+		<tr id="lesson_layout_del">
+			<td colspan="3">
+				Название
+				<SELECT id="lesson_del_select"></SELECT>
+			</td>
+		</tr>
+		<tr id="lesson_layout_edit">
+			<td>
+        		Выбирите занятие для редактирования:
+        		<SELECT id="lesson_edit_select"></SELECT><br/>
+        		Название занятия:
+		       	<input type="text" id="lesson_edit_name"></input>
+		    </td>
+		    <td>
+		      	Цвет фона (в расписании):
+				<input type="text" maxlength="6" size="6" id="lesson_edit_color" value="ff0000" />
+			</td>
+			<td>
+				Продолжительность:
+				<input type="text" id="lesson_edit_duration"></input><br/>
+				Описание:
+				<input type="text" id="lesson_edit_desc"></input>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<button id="lesson_create">Создать</button>
+				<button id="lesson_delete">Удалить</button>
+				<button id="lesson_save">Сохранить</button>
+				<button id="lesson_cancel">Отмена</button>
+				
+			</td>
+		</tr>
+		<tr id="lesson_layout_select">
+			<td>
+				<button id="lesson_toggle_add">Добавить</button>
+				<button id="lesson_toggle_edit">Редактировать</button>
+				<button id="lesson_toggle_del">Удалить</button>
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="contentic2" class="filtr">
+<h1>Добавление тренера в базу</h1>
+	<table>
+		<tr>
+			<td>
+        		Имя тренера:
+		       	<input type="text" id="trainer_name"></input>
+		    </td>
+		    <td>
+		      	Телефон:
+				<input type="text" id="trainer_phone" />
+			</td>
+			<td>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<button id="create_trainer">Создать</button>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="contentic2" class="filtr">
+<h1>Копировать рассписание на неделю вперед</h1>
+	<table>
+		<tr>
+			<td>
+        		Выберете любой день недели, которую вы хотите скопировать:
+		       	<input type="text" id="copyweek_day" />
+		    </td>
+		    <td>
+		      	Укажите сколько недель прибавить(?):
+				<input type="text" id="copyweek_count" />
+			</td>
+			<td>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<button id="copyweek_copy">Копировать</button>
+			</td>
+		</tr>
+	</table>
+</div>
+		
+		
+		<a id="timetable"></a>
+		<div class="iContent">
+			<div class="content">
+			Дата: <input type="text" id="filter_date" />
+    			<div id="timeTableContainer"></div>
+			</div>
+		</div>	
+	</div>
+
+
+</body>
+</html>
