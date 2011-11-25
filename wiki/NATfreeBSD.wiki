@@ -1,0 +1,58 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Настройка NAT в freebsd
+
+1 Нужно ядро скомпилированное с фаерволом или включаем через rc.conf
+
+1,1 Установка исходников ядра или через sysinstall или с диска руками ( /cdrom/src/>./install.sh )
+
+1,2 Создаем копию оригинального конф файла ядра
+/usr/src/sys/i386/conf/>cp GENERIC main_kernell
+
+1,3 Добавляем строки в main_kernell
+options         IPFIREWALL
+options         IPFIREWALL_VERBOSE
+options         IPFIREWALL_VERBOSE_LIMIT=50
+options         IPFIREWALL_NAT
+options         IPFIREWALL_FORWARD
+options         IPDIVERT
+options         LIBALIAS
+options         DUMMYNET
+options         IPFIREWALL_DEFAULT_TO_ACCEPT
+
+1,4 Компиляция и установка ядра
+/usr/src/>make buildkernel KERNCONF=main_kernell
+/usr/src/>make installkernel KERNCONF=main_kernell
+
+2 Нужно настроить сеть. В rc.conf дописываем
+
+gateway_enable="YES"
+
+#шлюз
+defaultrouter="79.171.123.161"
+
+#rl0 - смотрит на провайдера
+ifconfig_rl0="inet 79.171.123.167 netmask 255.255.255.224"
+ifconfig_rl0_alias0="ether 00:13:D4:3C:98:94"
+#rl1 - смотрит во внутр сеть
+ifconfig_rl1="inet 192.168.0.1 netmask 255.255.255.0"
+
+firewall_enable="YES" - если файрволл грузится модулем
+#firewall_type="/etc/rc.firewall" - файл с правилами файрволла
+firewall_nat_enable="YES"
+#dummynet_enable="YES"
+
+3 Нужно настроить нат. 
+firewall_script="/etc/ipfw.rules"
+
+
+/sbin/ipfw nat 1 config ip 79.171.123.167 redirect_port tcp 192.168.0.112:8000 8000 redirect_port tcp 192.168.0.112:9750 9750 redirect_port tcp 192.168.0.112:27015 27015
+/sbin/ipfw add nat 1 ip from any to any via rl2
+/sbin/ipfw add allow all from any to any
+
+
+named можно включить в автозапуск через sysinstall
+
+= Details =
