@@ -2,31 +2,29 @@ import java.util.HashMap;
 
 
 
-public class Abstract {
+public class Abstract extends Entity {
+	
 	public static enum Type {
 		FUNCTION,
 		VARIABLE,
 		TABLE
 	}
-	private String name;
+	
+	private Type abstractType;
 	private Abstract parent;
-	private boolean hasParent;
-	private HashMap<String, Abstract> children;
+	private HashMap<String, Abstract> children=new HashMap<String, Abstract>();
 	
 	public Abstract(){
-		children = new HashMap<String, Abstract>();
+		super();
+		//children = new HashMap<String, Abstract>();
 	}
+	
 	
 	public Abstract(String name){
-		this();
-		this.name = name;
+		super(name);
+		
 	}
-	
-	public Abstract(Abstract parent){
-		this();
-		this.parent = parent;
-	}
-	
+		
 	public void addChield(String chName, Abstract chield){
 		chield.setParent(this);
 		children.put(chName, chield);
@@ -53,21 +51,22 @@ public class Abstract {
 		return null;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
 	public void setParent(Abstract parent) {
-		this.hasParent = true;
 		this.parent = parent;
 	}
 
 	public Abstract getParent() {
 		return parent;
+	}
+
+
+	public void setAbstractType(Type abstractType) {
+		this.abstractType = abstractType;
+	}
+
+
+	public Type getAbstractType() {
+		return abstractType;
 	}
 	
 

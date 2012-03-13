@@ -3,22 +3,6 @@ import java.util.regex.Pattern;
 
 public class FileReader {
 	
-	public static enum ExpectedType {
-		NULL,
-		KEYWORD,
-		OPERATION
-	};
-	
-	public class ReadOperationResult {
-		public ExpectedType type;
-		public String value;
-		public ReadOperationResult(){
-			type = ExpectedType.NULL;
-			value = "";
-		}
-		
-	}
-	
 	//private static final Pattern READ_PATTERN = Pattern.compile("(([,.=+-~/])|([^ ;]*))");
 	private static final Pattern SKIP_PATTERN = Pattern.compile("[ ;\t]");
 	private static final Pattern KEYWORD_PATTERN = Pattern.compile("[\\w]");
@@ -38,15 +22,15 @@ public class FileReader {
 	}
 	
 	
-	public ReadOperationResult read(FileReader.ExpectedType... expectedTypes) throws Exception {
+	public Entity read(Entity.Type... expectedTypes) throws Exception {
 		
 		// get next word from file
-		ReadOperationResult word = readWord();
+		Entity word = readWord();
 		
 		// match expected type and "word" type
 		
-		for(FileReader.ExpectedType et : expectedTypes){
-			if (et.equals(word.type)){
+		for(Entity.Type et : expectedTypes){
+			if (et.equals(word.getBasicType())){
 				return word;
 			}
 		}
@@ -91,11 +75,13 @@ public class FileReader {
 		
 	}
 	
-	private ReadOperationResult readWord(){
-		ReadOperationResult currentWord = new ReadOperationResult();
+	private Entity readWord(){
 		boolean inWord = false;
+		String currentWord = "";
+		Entity.Type wordType = Entity.Type.NULL;
 		
-		for(int i=inFilePosition; i<fileContent.length(); i++){
+		int startPosition = inFilePosition;
+		for(int i=startPosition; i<fileContent.length(); i++){
 			String c = fileContent.charAt(i) + "";
 			//System.out.println(c);
 			if (SKIP_PATTERN.matcher(c).matches()){
@@ -105,22 +91,27 @@ public class FileReader {
 				}
 			} else if (KEYWORD_PATTERN.matcher(c).matches()) {
 				inWord = true;
-				currentWord.type = ExpectedType.KEYWORD;
-				currentWord.value += c;
+				wordType = Entity.Type.KEYWORD;
+				currentWord += c;
 			} else if (OPERATION_PATTERN.matcher(c).matches()) {
 				if (inWord){
 					inFilePosition = i;
 					break;
 				}
-				currentWord.type = ExpectedType.OPERATION;
-				currentWord.value = c;
+				wordType = Entity.Type.OPERATION;
+				currentWord = c;
 				inFilePosition = i+1;
 				break;
 			}
 		}
+		System.out.println("Word:"+currentWord);
 		
-		System.out.println("Word:"+currentWord.value);
-		return currentWord;
+		Entity resultObject = new Entity();
+		resultObject.setStartPosition(startPosition);
+		resultObject.setEndPosition(inFilePosition - 1);
+		resultObject.setName(currentWord);
+		resultObject.setBasicType(wordType);
+		return resultObject;
 	}
 	
 	

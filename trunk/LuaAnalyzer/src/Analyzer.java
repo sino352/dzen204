@@ -23,7 +23,7 @@ public class Analyzer {
 	
 	public void start() {
 		
-		
+		/*
 		Abstract a1 = new Abstract("a1");
 		globalScope.addChield("a1", a1);
 		
@@ -33,13 +33,20 @@ public class Analyzer {
 		Abstract a11 = new Abstract("a11");
 		a1.addChield("a11", a11);
 		
-		Abstract a111 = new Abstract("a111");
+		Entity test = new Entity("a1fghfgjfgjfgjfjv11");
+		
+		Abstract a111 = test.getAbstract();
 		a11.addChield("a111", a111);
 		
 		Abstract search = globalScope.getFromLocalAndChield("a111");
 		System.out.print(search.getName());
+		*/
 		
 		file = new FileReader("test");
+		
+		expect(Entity.Type.KEYWORD);
+		
+		
 		/*try {
 			f.read(FileReader.ExpectedType.KEYWORD);
 			f.read(FileReader.ExpectedType.KEYWORD,FileReader.ExpectedType.OPERATION);
@@ -51,14 +58,14 @@ public class Analyzer {
 		
 	}
 	
-	private void expect(FileReader.ExpectedType... expectedTypes){
+	private void expect(Entity.Type... expectedTypes){
 		try{
-			FileReader.ReadOperationResult ro = file.read(expectedTypes);
+			Entity ro = file.read(expectedTypes);
 			
-			if (FileReader.ExpectedType.KEYWORD == ro.type)
-				processKeyword(ro.value);
-			else if (FileReader.ExpectedType.OPERATION == ro.type)
-				processOperation(ro.value);
+			if (Entity.Type.KEYWORD == ro.getBasicType())
+				processKeyword(ro.getName());
+			else if (Entity.Type.OPERATION == ro.getBasicType())
+				processOperation(ro.getName());
 			
 			
 			
@@ -72,6 +79,7 @@ public class Analyzer {
 		if (KNOWN_KW.lastIndexOf(keyword) > 0){
 			
 		}
+		expect(Entity.Type.OPERATION);
 	}
 	
 	private void processOperation(String operation){
