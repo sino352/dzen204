@@ -11,14 +11,14 @@ public class Analyzer {
 		
 	}
 	
-	private Abstract globalScope;
-	private Abstract currentScope;
-	private Abstract abstr;
+	private TreeEntry globalScope;
+	private TreeEntry currentScope;
+	private TreeEntry abstr;
 	private FileReader file;
 	
 	public Analyzer(){
 		globalScope = createGlobalScope();
-		abstr = new Abstract();
+		abstr = new TreeEntry();
 	}
 	
 	public void start() {
@@ -44,7 +44,7 @@ public class Analyzer {
 		
 		file = new FileReader("test");
 		
-		expect(Entity.Type.KEYWORD);
+		expect(CodeEntry.Type.KEYWORD);
 		
 		
 		/*try {
@@ -58,13 +58,13 @@ public class Analyzer {
 		
 	}
 	
-	private void expect(Entity.Type... expectedTypes){
+	private void expect(CodeEntry.Type... expectedTypes){
 		try{
-			Entity ro = file.read(expectedTypes);
+			CodeEntry ro = file.read(expectedTypes);
 			
-			if (Entity.Type.KEYWORD == ro.getBasicType())
+			if (CodeEntry.Type.KEYWORD == ro.getBasicType())
 				processKeyword(ro.getName());
-			else if (Entity.Type.OPERATION == ro.getBasicType())
+			else if (CodeEntry.Type.OPERATION == ro.getBasicType())
 				processOperation(ro.getName());
 			
 			
@@ -79,7 +79,7 @@ public class Analyzer {
 		if (KNOWN_KW.lastIndexOf(keyword) > 0){
 			
 		}
-		expect(Entity.Type.OPERATION);
+		expect(CodeEntry.Type.OPERATION);
 	}
 	
 	private void processOperation(String operation){
@@ -92,8 +92,8 @@ public class Analyzer {
 	
 	
 	
-	private Abstract createGlobalScope(){
-		Abstract scope = new Abstract();
+	private TreeEntry createGlobalScope(){
+		TreeEntry scope = new TreeEntry();
 		return scope;
 	}
 
