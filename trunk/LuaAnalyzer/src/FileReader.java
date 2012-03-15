@@ -22,14 +22,14 @@ public class FileReader {
 	}
 	
 	
-	public Entity read(Entity.Type... expectedTypes) throws Exception {
+	public CodeEntry read(CodeEntry.Type... expectedTypes) throws Exception {
 		
 		// get next word from file
-		Entity word = readWord();
+		CodeEntry word = readWord();
 		
 		// match expected type and "word" type
 		
-		for(Entity.Type et : expectedTypes){
+		for(CodeEntry.Type et : expectedTypes){
 			if (et.equals(word.getBasicType())){
 				return word;
 			}
@@ -75,10 +75,10 @@ public class FileReader {
 		
 	}
 	
-	private Entity readWord(){
+	private CodeEntry readWord(){
 		boolean inWord = false;
 		String currentWord = "";
-		Entity.Type wordType = Entity.Type.NULL;
+		CodeEntry.Type wordType = CodeEntry.Type.NULL;
 		
 		int startPosition = inFilePosition;
 		for(int i=startPosition; i<fileContent.length(); i++){
@@ -91,14 +91,14 @@ public class FileReader {
 				}
 			} else if (KEYWORD_PATTERN.matcher(c).matches()) {
 				inWord = true;
-				wordType = Entity.Type.KEYWORD;
+				wordType = CodeEntry.Type.KEYWORD;
 				currentWord += c;
 			} else if (OPERATION_PATTERN.matcher(c).matches()) {
 				if (inWord){
 					inFilePosition = i;
 					break;
 				}
-				wordType = Entity.Type.OPERATION;
+				wordType = CodeEntry.Type.OPERATION;
 				currentWord = c;
 				inFilePosition = i+1;
 				break;
@@ -106,7 +106,7 @@ public class FileReader {
 		}
 		System.out.println("Word:"+currentWord);
 		
-		Entity resultObject = new Entity();
+		CodeEntry resultObject = new CodeEntry();
 		resultObject.setStartPosition(startPosition);
 		resultObject.setEndPosition(inFilePosition - 1);
 		resultObject.setName(currentWord);
