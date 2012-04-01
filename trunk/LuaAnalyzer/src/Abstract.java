@@ -30,6 +30,10 @@ public class Abstract extends Entity {
 		children.put(chName, chield);
 	}
 	
+	public void removeChield(String chName){
+		children.remove(chName);
+	}
+	
 	public Abstract getFromLocalAndParent(String chName){
 		if (children.containsKey(chName))
 			return children.get(chName);
@@ -69,5 +73,14 @@ public class Abstract extends Entity {
 		return abstractType;
 	}
 	
+	@Override
+	public void setName(String newName) {
+		
+		if(null != parent){
+			parent.removeChield(name);
+			parent.addChield(newName, this);
+		}
+		super.setName(name);
+	}
 
 }
