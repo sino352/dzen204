@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class Analyzer {
 	
 	private static final String KNOWN_KW = " local function end for while if "; 
@@ -13,12 +15,19 @@ public class Analyzer {
 	
 	private TreeEntry globalScope;
 	private TreeEntry currentScope;
-	private TreeEntry abstr;
+	private LinkedList<TreeEntry> abstr;
 	private FileReader file;
+	
+	private boolean shouldBeName = false;
+	private boolean shouldBeValue = false;
+	private boolean canBeParameter = false;
+	
 	
 	public Analyzer(){
 		globalScope = createGlobalScope();
-		abstr = new TreeEntry();
+		currentScope = globalScope;
+		abstr = new LinkedList<TreeEntry>();
+		//abstr = new TreeEntry();
 	}
 	
 	public void start() {
@@ -76,21 +85,54 @@ public class Analyzer {
 	
 	private void processKeyword(String keyword){
 		// check whether this is known Lua keyword
-		if (KNOWN_KW.lastIndexOf(keyword) > 0){
-			
+		if(shouldBeName){
+			shouldBeName = false;
+			getAbstract(false).setName(keyword);
+		}
+		else if(shouldBeValue){
+			shouldBeValue = false;
+			if (KNOWN_KW.lastIndexOf(keyword) > 0){
+				
+			}
+				
+		}
+		else if (KNOWN_KW.lastIndexOf(keyword) > 0){
+			processLuaKW(keyword);
 		}
 		expect(CodeEntry.Type.OPERATION);
 	}
 	
 	private void processOperation(String operation){
+		if (operation.equals("=")){
+			shouldBeValue = true;
+			expect(CodeEntry.Type.KEYWORD, CodeEntry.Type.OPERATION);
+		}
 		
 	}
 	
 	private void processLuaKW(String keyword){
-		
+		if (keyword.equals("local")) {
+			mekeAbstractLocal();
+			shouldBeName = true;
+			expect(CodeEntry.Type.KEYWORD);
+		}
 	}
 	
+	private void mekeAbstractLocal(){
+		TreeEntry currentAbstract = getAbstract(false);
+		currentScope.addChield(currentAbstract.getName(), currentAbstract);
+	}
 	
+	private TreeEntry getAbstract(boolean fromBottom){
+		if (abstr.size() > 0){
+			return (fromBottom) ? abstr.getLast() : abstr.getFirst();
+		}
+		String newAbstractName = "abstract" + abstr.size();
+		TreeEntry newAbstr = new TreeEntry(newAbstractName);
+		abstr.addFirst(newAbstr);
+		return newAbstr;
+		
+	}
 	
 	private TreeEntry createGlobalScope(){
 		TreeEntry scope = new TreeEntry();

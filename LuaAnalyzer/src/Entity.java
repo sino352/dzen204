@@ -7,14 +7,20 @@ public class Entity {
 		OPERATION
 	}
 	
-	private String name;
+	protected String name;
 	private int startPosition;
 	private int endPosition;
 	private Type entityType;
+	private Abstract childAbstract;
 	
 	public Entity(){
 		this.entityType = Type.NULL;
 		this.name = "";
+	}
+	
+	public Entity(Abstract abs){
+		childAbstract = abs;
+		
 	}
 	
 	public Entity(String name){
@@ -23,12 +29,15 @@ public class Entity {
 	}
 	
 	public Abstract getAbstract(){
-		Abstract a = new Abstract();
-		a.setName(this.name);
-		a.setStartPosition(this.startPosition);
-		a.setEndPosition(this.endPosition);
-		a.setBasicType(this.entityType);
-		return a;
+		if (null != childAbstract){
+			return childAbstract;
+		}
+		childAbstract = new Abstract();
+		childAbstract.setName(this.name);
+		childAbstract.setStartPosition(this.startPosition);
+		childAbstract.setEndPosition(this.endPosition);
+		childAbstract.setBasicType(this.entityType);
+		return childAbstract;
 	}
 
 	public void setStartPosition(int startPosition) {
