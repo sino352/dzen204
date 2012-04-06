@@ -18,10 +18,6 @@ public class Analyzer {
 	private LinkedList<TreeEntry> abstr;
 	private FileReader file;
 	
-	private boolean shouldBeName = false;
-	private boolean shouldBeValue = false;
-	private boolean canBeParameter = false;
-	
 	
 	public Analyzer(){
 		globalScope = createGlobalScope();
@@ -52,8 +48,8 @@ public class Analyzer {
 		*/
 		
 		file = new FileReader("test");
-		
-		expect(CodeEntry.Type.KEYWORD);
+		Iteration newIter = new Iteration();
+		expect(newIter, CodeEntry.Type.KEYWORD);
 		
 		
 		/*try {
@@ -67,14 +63,15 @@ public class Analyzer {
 		
 	}
 	
-	private void expect(CodeEntry.Type... expectedTypes){
+	private void expect(Iteration curIter, CodeEntry.Type... expectedTypes){
 		try{
+			Iteration newIter = new Iteration();
 			CodeEntry ro = file.read(expectedTypes);
 			
 			if (CodeEntry.Type.KEYWORD == ro.getBasicType())
-				processKeyword(ro.getName());
+				processKeyword(curIter, newIter, ro.getName());
 			else if (CodeEntry.Type.OPERATION == ro.getBasicType())
-				processOperation(ro.getName());
+				processOperation(curIter, newIter, ro.getName());
 			
 			
 			
@@ -83,38 +80,41 @@ public class Analyzer {
 		}
 	}
 	
-	private void processKeyword(String keyword){
+	
+	
+	private void processKeyword(Iteration curIter, Iteration newIter, String keyword){
 		// check whether this is known Lua keyword
-		if(shouldBeName){
-			shouldBeName = false;
+		if(curIter.shouldBeName()){
 			getAbstract(false).setName(keyword);
 		}
-		else if(shouldBeValue){
-			shouldBeValue = false;
+		else if(curIter.shouldBeValue()){
 			if (KNOWN_KW.lastIndexOf(keyword) > 0){
 				
 			}
+			getAbstract(false).setName(keyword);
+			//newIter.canBeComma(true); multiple assigment
+			newIter. -------------------- sto here
 				
 		}
 		else if (KNOWN_KW.lastIndexOf(keyword) > 0){
-			processLuaKW(keyword);
+			processLuaKW(curIter, newIter, keyword);
 		}
-		expect(CodeEntry.Type.OPERATION);
+		expect(newIter, CodeEntry.Type.OPERATION);
 	}
 	
-	private void processOperation(String operation){
+	private void processOperation(Iteration curIter, Iteration newIter, String operation){
 		if (operation.equals("=")){
-			shouldBeValue = true;
-			expect(CodeEntry.Type.KEYWORD, CodeEntry.Type.OPERATION);
+			newIter.shouldBeValue(true);
+			expect(curIter, CodeEntry.Type.KEYWORD, CodeEntry.Type.OPERATION);
 		}
 		
 	}
 	
-	private void processLuaKW(String keyword){
+	private void processLuaKW(Iteration curIter, Iteration newIter, String keyword){
 		if (keyword.equals("local")) {
 			mekeAbstractLocal();
-			shouldBeName = true;
-			expect(CodeEntry.Type.KEYWORD);
+			curIter.shouldBeName(true);
+			expect(newIter, CodeEntry.Type.KEYWORD);
 		}
 	}
 	
