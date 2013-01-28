@@ -1,0 +1,167 @@
+                     Expression Synax:
+                    Last update: 1.4.65 
+					
+======================================================================
+Oper|Usage     |Description
+======================================================================
++   |x + y     |Addition operator
++   |+x        |Unary addition operator
+-   |x - y     |Minus operator
+*   |x * y     |Multiplication operator
+/   |x / y     |Division operator
+^   |x ^ y     |Power operator. Calculates x raised to the power of y
+-   |-x        |Unary minus operator
+%   |x % y     |Modulo; find remainder of the division of x by y
+>   |x > y     |Greater than logical operator.  Returns 1 if true, 
+    |          |0 if false.
+<   |x < y     |Lesser than logical operator.  Returns 1 if true, 
+    |          |0 if false.
+>=  |x >= y    |Greater than or equal logical operator.  
+    |          |Returns 1 if true, 0 if false.
+<=  |x <= y    |Lesser than or equal logical operator.  
+    |          |Returns 1 if true, 0 if false.
+!=  |x != y    |Not equal logical operator.  
+    |          |Returns 1 if true, 0 if false.
+==  |x == y    |Equal logical operator.  Returns 1 if true, 0 if false.
+&   |x & y     |And logical operator.  Returns 1 if true, 0 if false.
+|   |x | y     |Or logical operator.  Returns 1 if true, 0 if false.
+!   |!x        |Not logical operator. Returns 1 if x is 0, 
+    |          |else returns 1
+======================================================================
+
+
+======================================================================
+Function|Usage                  |Description
+======================================================================
+round   |round(x)               |Round the fractional part of a number
+sin     |sin(rad)               |Sine
+asin    |asin(rad)              |Arcsine
+sinh    |sinh(rad)              |Hyperbolic sine
+cos     |cos(rad)               |Cosine
+acos    |acos(rad)              |Arccosine
+cosh    |cosh(rad)              |Hyperbolic cosine
+tan     |tan(rad)               |Tangent
+atan    |atan(rad)              |Arctangent
+tanh    |tanh(rad)              |Hyperbolic tangent
+sqrt    |sqrt(x)                |Square root
+min     |min(x,y)               |Returns smaller of two values
+min     |min(x,y,z)             |Returns smaller of three values
+min     |min(v1,v2,v3,...)      |Returns smaller of a set of values
+max     |max(x,y)               |Returns larger of two values
+max     |max(x,y,z)             |Returns larger of three values
+max     |max(v1,v2,v3,...)      |Returns larger of a set of values
+abs     |abs(x)                 |Absolute value
+rand    |rand()                 |Random value between 0 and 1
+rand    |rand(min, max)         |Random value between min and max
+ceil    |ceil(x)                |Ceiling
+floor   |floor(x)               |Floor
+log     |log(x)                 |Natural logarithm
+log10   |log10(x)               |Base-10 logarithm
+avg     |avg(v1,v2,v3,...)      |Returns the average of a set of values
+sum     |sum(v1,v2,v3,...)      |Returns the sum of a set of values
+fact    |fact(x)                |Returns the factorial of 
+        |                       |x: x*(x-1)*(x-2)*...(x-x+1)
+if      |if(condition,val1,val2)|If the condition is true, returns val1 
+        |                       |else returns val2.
+isNaN   |isNan(value)           |Returns 1 if the number is a NaN value.
+isFinite|isFinite(value)        |Returns 1 if the number is finite.
+hex     |hex(hexNumber)         |Converts an hexadecimal 
+        |                       |number to a decimal number
+bin     |bin(binNumber)         |Converts a binary number to a 
+        |                       |decimal number
+======================================================================
+
+
+======================================================================
+Const      | Value
+======================================================================
+NaN        | -2147483648.00000-2147483648
+pi         | 3.1415926
+e          | 2.7182818
+======================================================================
+
+
+======================================================================
+Vars (Global)        | Type    | Description
+======================================================================
+IS_PEACE_ZONE        | BOOL    | If we are on peace zone
+IS_SIEGE_ZONE        | BOOL    | If we are on siege zone
+IS_GENERAL_ZONE      | BOOL    | If we are on general zone
+======================================================================
+
+
+Variables bellow should be used only with one of a prefix:
+M_ - Myself
+P_ - My Pet/Summon
+T_ - Skill target or my real target.
+======================================================================
+Vars (With  M_,P_,T_)| Type    | Description
+======================================================================
+IS_ACTIVE            | BOOL    | Is active
+IS_PLAYER            | BOOL    | Is a player
+IS_PARTY_MEMBER      | BOOL    | Is party member
+IS_MONSTER           | BOOL    | Is monster
+IS_PARTY_MASTER      | BOOL    | Is party master
+IS_FRIEND            | BOOL    | Is a clan/party/ally member
+IS_ME                | BOOL    | Is me
+IS_NPC               | BOOL    | Is NPC
+IS_CLAN_MEMBER       | BOOL    | Is clan member
+IS_CLAN_MASTER       | BOOL    | Is clan master
+IS_ALLIANCE_MEMBER   | BOOL    | Is alliance member
+IS_WALKING           | BOOL    | Is walking/Not running
+IS_SITING            | BOOL    | Is siting
+IS_ENEMY             | BOOL    | Is enemy, can be killed with no ctrl.
+IS_PVP_FLAGED        | BOOL    | Is flaged, can be killed
+IS_PVP_FLAG_BLINK    | BOOL    | Flag ends in max 20 seconds
+IS_DEATH             | BOOL    | Is death
+IS_SPOILED           | BOOL    | Is spoiled by our bot
+IS_PET               | BOOL    | Is pet
+IS_MY_PET            | BOOL    | Is my pet
+IS_SUMMON            | BOOL    | Is summon
+IS_ATTACKING         | BOOL    | Is attacking me
+IS_ATTACKED          | BOOL    | Was attacked by me ?
+IS_HUMAN             | BOOL    | Is human class (only if player)
+IS_ELF               | BOOL    | Is elf class (only if player)
+IS_DARKELF           | BOOL    | Is darkelf (only if player)
+IS_ORC               | BOOL    | Is orc (only if player)
+IS_DWARF             | BOOL    | Is dwarf (only if player)
+IS_KAMAEL            | BOOL    | Is kamael (only if player)
+IS_BLOCKED           | BOOL    | Can't move and use skills
+IS_USING_MAGIC       | BOOL    | Is using magic now
+IS_IN_COMBAT         | BOOL    | Is in combat
+IS_CAN_SEE_ME        | BOOL    | Can see me ?
+IS_HAVING_WEAPON     | BOOL    | Got weapon in hand
+IS_HERO              | BOOL    | Is hero
+IS_NOBLES            | BOOL    | Is nobles
+IS_UNDER_ATTACK      | BOOL    | Is under attack
+----------------------------------------------------------------------
+MELE_ATTACK_RANGE    | NUMBER  | Mele attack range, usually 40
+RANGE                | NUMBER  | Range to char
+HP                   | NUMBER  | Hp
+MP                   | NUMBER  | Mp
+CP                   | NUMBER  | Cp
+MAX_HP               | NUMBER  | Max Hp
+MAX_MP               | NUMBER  | Max Mp
+MAX_CP               | NUMBER  | Max Cp
+DAMAGE_HP            | NUMBER  | Max Hp - Hp
+DAMAGE_MP            | NUMBER  | Max Mp - Mp
+DAMAGE_CP            | NUMBER  | Max Cp - Cp
+PERCENT_HP           | NUMBER  | Hp/MaxHp*100%
+PERCENT_MP           | NUMBER  | Mp/MaxMp*100%
+PERCENT_CP           | NUMBER  | Cp/MaxCp*100%
+LEVEL                | NUMBER  | Level
+PENALTY_LEVEL        | NUMBER  | Penalty level (when you die ...)
+SOULS                | NUMBER  | Souls (for kamaels)
+ENERGY               | NUMBER  | Energy (for tyrant, gladiator)
+NPC_ID               | NUMBER  | Npc ID
+MAX_WEIGHT           | NUMBER  | MaxWeight
+WEIGHT               | NUMBER  | Weight
+PERCENT_WEIGHT       | NUMBER  | Weight/MaxWeight*100%
+CLASS                | NUMBER  | Class ID
+REPUTATION           | NUMBER  | Reputation (Karma on old chronicles)
+WEAPON_ENCHANT_LEVEL | NUMBER  | Weapon enchant
+VITALITY             | NUMBER  | Vitality 
+LOC_X                | NUMBER  | Location X
+LOC_Y                | NUMBER  | Location Y
+LOC_Z                | NUMBER  | Location Z
+======================================================================
