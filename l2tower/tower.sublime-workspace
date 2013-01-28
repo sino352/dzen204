@@ -1,0 +1,749 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"table",
+				"table.concat	table.concat"
+			],
+			[
+				"val",
+				"valOut"
+			],
+			[
+				"key",
+				"keyOut"
+			],
+			[
+				"C",
+				"CMapView"
+			],
+			[
+				"fun",
+				"fun	function"
+			],
+			[
+				"f",
+				"function	function"
+			],
+			[
+				"fo",
+				"forp	for k,v in pairs()"
+			],
+			[
+				"dot",
+				"dotsGroups"
+			],
+			[
+				"lay",
+				"layout"
+			],
+			[
+				"sub",
+				"subViews"
+			],
+			[
+				"rec",
+				"rectX"
+			],
+			[
+				"s",
+				"subViews"
+			],
+			[
+				"dra",
+				"draw"
+			],
+			[
+				"vi",
+				"view"
+			],
+			[
+				"v",
+				"view"
+			],
+			[
+				"e",
+				"eventListeners"
+			],
+			[
+				"d",
+				"draw"
+			],
+			[
+				"do",
+				"dofile"
+			],
+			[
+				"Y",
+				"Y"
+			],
+			[
+				"use",
+				"userLoc"
+			],
+			[
+				"Get",
+				"GetId"
+			],
+			[
+				"Ge",
+				"GetMe"
+			],
+			[
+				"for",
+				"forp	for k,v in pairs()"
+			],
+			[
+				"IN",
+				"INVITE_MODE"
+			],
+			[
+				"act",
+				"actionsToProcess"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"OO",
+				"OOP_MODE"
+			],
+			[
+				"ins",
+				"insert"
+			],
+			[
+				"wa",
+				"watching"
+			],
+			[
+				"STOP",
+				"STOPPED"
+			],
+			[
+				"Ena",
+				"ENABLED"
+			],
+			[
+				"las",
+				"lastUsed"
+			],
+			[
+				"the",
+				"then--and"
+			],
+			[
+				"la",
+				"lastUser"
+			],
+			[
+				"cas",
+				"castedSkill"
+			],
+			[
+				"unpa",
+				"unpack"
+			],
+			[
+				"of",
+				"offset"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "SEP/main.lua",
+			"settings":
+			{
+				"buffer_size": 1885,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SEP/Core/CMapView.lua",
+			"settings":
+			{
+				"buffer_size": 3963,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SEP/Core/CView.lua",
+			"settings":
+			{
+				"buffer_size": 1779,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SEP/Core/CUtils.lua",
+			"settings":
+			{
+				"buffer_size": 2593,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SEP/UserLocationReader.lua",
+			"settings":
+			{
+				"buffer_size": 1445,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SEP/Core/CPoint.lua",
+			"settings":
+			{
+				"buffer_size": 1636,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SEP/DataModel.lua",
+			"settings":
+			{
+				"buffer_size": 1948,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SEP/DB.lua",
+			"settings":
+			{
+				"buffer_size": 565,
+				"line_ending": "Windows",
+				"name": "DB"
+			}
+		},
+		{
+			"file": "SEP/Core/CCore.lua",
+			"settings":
+			{
+				"buffer_size": 898,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/User/SEP.sublime-build",
+	"command_palette":
+	{
+		"height": 242.0,
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/H/!tmp/l2tower/SEP/DB/WPBorthRoom.luatable",
+		"/H/!tmp/l2tower/SEP/DB/DB2.luatable",
+		"/H/!tmp/l2tower/SEP/DB/DB.luatable",
+		"/H/!tmp/l2tower/sep.bat",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Packages/User/SEP.sublime-build",
+		"/H/!tmp/l2tower/SEP/DB.txt",
+		"/H/!tmp/l2tower/DB.txt",
+		"/H/!tmp/l2tower/SEP/Core/CLayoutManagers.lua",
+		"/H/!tmp/l2tower/SEP/Core/CClass.lua",
+		"/H/!tmp/l2tower/SEP/Core/CCore.lua",
+		"/H/!tmp/l2tower/SEP/Core/CPoint.lua",
+		"/H/!tmp/l2tower/SEP/CMapView.lua",
+		"/H/!tmp/l2tower/scripts/testIO.lua",
+		"/H/!tmp/l2tower/SEP/Core/CUtils.lua",
+		"/H/!tmp/l2tower/SEP/SApp.lua",
+		"/H/!tmp/l2tower/SEP/V1main.lua",
+		"/H/!tmp/l2tower/SEP/MainTabContr.lua",
+		"/H/!tmp/l2tower/SEP/DataModel.lua",
+		"/H/!tmp/l2tower/SEP/CmpDotMapView.lua",
+		"/H/!tmp/l2tower/SEP/CView.lua",
+		"/H/!tmp/l2tower/SEP/LayoutManagers.lua",
+		"/H/!tmp/l2tower/SEP/CButton.lua",
+		"/H/!tmp/l2tower/test.test",
+		"/H/!tmp/l2tower/scripts/nobl.lua",
+		"/H/!tmp/l2tower/config/H__!gam_Lineage_2,_Tauti_arteas_/skills.txt",
+		"/H/!tmp/l2tower/config/H__!gam_Lineage_2,_Tauti_arteas_/items.txt",
+		"/H/!tmp/l2tower/scripts/heal.lua",
+		"/H/!prog/!lua/test.lua",
+		"/H/!prog/!lua/xml.lua",
+		"/H/!prog/!lua/!polycode/wrk/map/ScreenEntities.lua",
+		"/H/!prog/!lua/!polycode/wrk/labirint/MazeGenerator.lua",
+		"/H/!prog/!lua/!polycode/wrk/labirint/Helper.lua",
+		"/H/!tmp/l2tower/scripts/NoMaster.lua",
+		"/H/!tmp/l2tower/SEP/main.lua",
+		"/H/!tmp/l2tower/main.lua",
+		"/H/!tmp/l2tower/scripts/Nuker.lua",
+		"/H/!tmp/l2tower/scripts/WatchPat.lua",
+		"/H/!tmp/l2tower/_archive/ControlScript.lua",
+		"/H/!tmp/l2tower/_archive/Quests(1-20).lua",
+		"/H/test.test",
+		"/H/!tmp/l2tower/_archive/testIO.lua",
+		"/H/!tmp/l2tower/scripts/is.lua",
+		"/H/!tmp/l2tower/scripts/UseMyItem.lua",
+		"/H/!prog/!lua/LuaInterface/Built/scripts/start.lua",
+		"/H/!tmp/l2tower/scripts/NukerSum.lua",
+		"/H/!tmp/l2tower/scripts/NoSS.lua",
+		"/H/!tmp/l2tower/plugins/test.lua",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Packages/Lua/for-i=1-10.sublime-snippet",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Packages/Lua/function-(fun).sublime-snippet",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Packages/Lua/Lua.tmLanguage",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Packages/Lua/function-(function).sublime-snippet",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Pristine Packages/Lua.sublime-package",
+		"/H/!tmp/l2tower/config/H__!gam_lineage_2_-_awakening_arteas_/items.txt",
+		"/H/!tmp/l2tower/scripts/mag.lua",
+		"/H/!tmp/l2tower/scripts/minParty.lua",
+		"/H/!tmp/l2tower/scripts/NukeBuffer.lua",
+		"/H/!tmp/l2tower/scripts/IssNuke.lua",
+		"/H/!tmp/l2tower/scripts/NukerMage.lua",
+		"/H/!tmp/l2tower/test.lua",
+		"/H/!tmp/l2tower/plugins/LearnAll.lua",
+		"/H/!tmp/l2tower/scripts/LearnAll.lua",
+		"/H/!tmp/l2tower/scripts/mage.lua",
+		"/H/!prog/!lua/LuaInterface/Built/scripts/FileReader.lua",
+		"/H/!prog/!lua/LuaInterface/Built/simpleTest.lua",
+		"/H/!prog/!lua/lua_profiler/scripts/loader.lua",
+		"/H/!tmp/l2tower/AntiDisarm.lua",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Users/max/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Y",
+			"X",
+			"Z",
+			"Y",
+			"X",
+			".Y",
+			".y",
+			".Y",
+			".y",
+			".Y",
+			".y",
+			".Y",
+			".y",
+			"Y",
+			"y",
+			".X",
+			".x",
+			".X",
+			".x",
+			".X",
+			".x",
+			".X",
+			"x",
+			"X",
+			"[3]",
+			"[2]",
+			"[1]",
+			"Point",
+			"sv",
+			"0",
+			"Core",
+			"mylastcordcheck",
+			"заряд души з",
+			"file",
+			"InviteChar",
+			"pause",
+			"ClearTargetSeq",
+			"clear",
+			"IsPaused",
+			"DelayCallFnk",
+			"dprint",
+			"AUTOBUFF",
+			"LeaveParty",
+			"buffsToProcess",
+			"настой",
+			"lastUser",
+			"]\n",
+			"target(",
+			"ClearTarget",
+			"145"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"y",
+			"x",
+			"z",
+			"y",
+			"x",
+			".z",
+			".y",
+			".x",
+			"CPoint"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "SEP/main.lua",
+					"settings":
+					{
+						"buffer_size": 1885,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1806,
+								1806
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 969.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "SEP/Core/CMapView.lua",
+					"settings":
+					{
+						"buffer_size": 3963,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1397,
+								1397
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 665.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "SEP/Core/CView.lua",
+					"settings":
+					{
+						"buffer_size": 1779,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1297,
+								1297
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 912.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "SEP/Core/CUtils.lua",
+					"settings":
+					{
+						"buffer_size": 2593,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1962,
+								1969
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 893.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "SEP/UserLocationReader.lua",
+					"settings":
+					{
+						"buffer_size": 1445,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								940,
+								940
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 342.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "SEP/Core/CPoint.lua",
+					"settings":
+					{
+						"buffer_size": 1636,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								20,
+								26
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "SEP/DataModel.lua",
+					"settings":
+					{
+						"buffer_size": 1948,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1434,
+								978
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "SEP/DB.lua",
+					"settings":
+					{
+						"buffer_size": 565,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								564,
+								564
+							]
+						],
+						"settings":
+						{
+							"auto_name": "DB",
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 126.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "SEP/Core/CCore.lua",
+					"settings":
+					{
+						"buffer_size": 898,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								253,
+								253
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 202.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"hea",
+				"scripts/heal.lua"
+			],
+			[
+				"no",
+				"scripts/nobl.lua"
+			],
+			[
+				"nu",
+				"scripts/Nuker.lua"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}

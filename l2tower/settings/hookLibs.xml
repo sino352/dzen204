@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HookDataItems xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <items>
+    <HookDataItem>
+      <name>EasyHook 2.6 (Static)</name>
+      <mode>0</mode>
+      <dll>HookLib_EasyHook.dll</dll>
+    </HookDataItem>
+    <HookDataItem>
+      <name>EasyHook 2.6 (Dynamic)</name>
+      <mode>0</mode>
+      <dll>HookLib_EasyHook_Dynamic.dll</dll>
+    </HookDataItem>
+    <HookDataItem>
+      <name>DetourXS 1.0 - JMP</name>
+      <mode>0</mode>
+      <dll>HookLib_DetourXS.dll</dll>
+    </HookDataItem>
+    <HookDataItem>
+      <name>DetourXS 1.0 - PUSH, RET</name>
+      <mode>1</mode>
+      <dll>HookLib_DetourXS.dll</dll>
+    </HookDataItem>
+    <HookDataItem>
+      <name>DetourXS 1.0 - NOP, JMP</name>
+      <mode>2</mode>
+      <dll>HookLib_DetourXS.dll</dll>
+    </HookDataItem>
+	<HookDataItem>
+      <name>MHook</name>
+      <mode>0</mode>
+      <dll>HookLib_MHook.dll</dll>
+    </HookDataItem>
+	<HookDataItem>
+      <name>MinHook</name>
+      <mode>0</mode>
+      <dll>HookLib_MinHook.dll</dll>
+    </HookDataItem>
+	<HookDataItem>
+      <name>Mologie Detours 1.1</name>
+      <mode>0</mode>
+      <dll>HookLib_MologieDetours1.1.dll</dll>
+    </HookDataItem>
+	<HookDataItem>
+      <name>N-CodeHook (Auto-Detection)</name>
+      <mode>0</mode>
+      <dll>HookLib_NCodeHook.dll</dll>
+    </HookDataItem>
+	<HookDataItem>
+      <name>NtHookEngine</name>
+      <mode>0</mode>
+      <dll>HookLib_NtHookEngine.dll</dll>
+    </HookDataItem>
+	<HookDataItem>
+      <name>Titanium Hooks (JUMP)</name>
+      <mode>1</mode>
+      <dll>HookLib_TitaniumHooks.dll</dll>
+    </HookDataItem>
+  </items>
+</HookDataItems>

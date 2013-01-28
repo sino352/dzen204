@@ -1,0 +1,49 @@
+
+To ship your game based on Blitwizard, simply combine your game files
+(your game.lua and other used scripts and the artwork you use) with the
+blitwizard binary (e.g. the windows .exe) and the templates folder.
+
+So all you need to ship is:
+
+ - blitwizard.exe or/and other platform's blitwizard binary
+   (you can find it inside the bin/ folder, obtain it from there)
+
+ - templates/ folder (all contents)
+
+ - game.lua from your own game and other files of your game (images etc)
+
+ - README-libs.txt for licensing (see disclaimer below)
+   (Note for advanced users: if you build Blitwizard without static libs
+    and without shipping any libs as dlls along with it, this is not
+    required)
+
+Ship a game for Android (you need a *Linux* machine for this!):
+
+  - Install the Android SDK. Then install 2.x Android API files.
+    Then install/extract the Android NDK for native code.
+
+  - Put purely your game files (game.lua, ..) in a dedicated folder that
+    contains nothing else -> your game folder
+      (DON'T add blitwizard binaries, templates/examples folder or anything)
+
+  - Go into the blitwizard script/ folder (inside the extracted blitwizard
+    source package as downloaded from the website) and edit
+    create-release-archive.sh and change ANDROID_SDK_PATH and
+    ANDROID_NDK_PATH to point to your SDK and NDK folders.
+
+  - Then run (in a terminal where you changed directory to script/):
+     sh ./create-release-archive.sh current android
+    When asked, specify a game name and the path to your game folder
+
+  - Important: Include README-libs.txt contents into your game in an
+    about screen for license compliance!
+      -> You should now have a working .apk file for Android.
+
+Disclaimer:
+  While I wrote some README files and point them out here for use to comply
+  with third-party library licensing, I am not a lawyer.
+  It is your own responsibility to make sure that you comply with the third
+  party libraries' licenses and any things like patents.
+
+Read http://www.blitwizard.de/license#third-party_licensing
+
